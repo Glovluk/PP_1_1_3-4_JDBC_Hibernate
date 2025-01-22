@@ -17,6 +17,8 @@ public class Main {
         User userRomanoff = new User("Natasha", "Romanoff", (byte) 37);
         User userStrange = new User("Stephen", "Strange", (byte) 39);
 
+        userService.createUsersTable();
+
         userService.saveUser(userOdinson.getName(), userOdinson.getLastName(), userOdinson.getAge());
         userService.saveUser(userBanner.getName(), userBanner.getLastName(), userBanner.getAge());
         userService.saveUser(userRomanoff.getName(), userRomanoff.getLastName(), userRomanoff.getAge());

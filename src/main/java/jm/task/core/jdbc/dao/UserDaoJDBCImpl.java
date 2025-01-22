@@ -29,8 +29,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         String CREATE_TABLE_MySQL = "CREATE TABLE IF NOT EXISTS users " +
-                "(id INT AUTO_INCREMENT, user_name VARCHAR(50), " +
-                "user_lastName VARCHAR(50), user_age TINYINT, PRIMARY KEY (id))";
+                "(id INT AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), " +
+                "user_lastName VARCHAR(50), user_age TINYINT)";
 
         try(Statement statement = connection.createStatement()) {
             statement.executeUpdate(CREATE_TABLE_MySQL);
@@ -86,6 +86,9 @@ public class UserDaoJDBCImpl implements UserDao {
                 User user = new User(resultSet.getString("user_name"),
                         resultSet.getString("user_lastname"),
                         resultSet.getByte("user_age"));
+                user.setId(resultSet.getLong("id"));
+
+                usersList.add(user);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
