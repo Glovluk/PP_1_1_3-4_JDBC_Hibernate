@@ -9,15 +9,7 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static final UserDaoJDBCImpl INSTANCE = new UserDaoJDBCImpl();
-    private static Connection connection;
-
-    static {
-        try {
-            connection = Util.getConnection();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    private static final Connection connection = Util.getConnection();
 
     private UserDaoJDBCImpl() {
 
@@ -29,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         String CREATE_TABLE_MySQL = "CREATE TABLE IF NOT EXISTS users " +
-                "(id INT AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), " +
+                "(id BIGINT AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), " +
                 "user_lastName VARCHAR(50), user_age TINYINT)";
 
         try(Statement statement = connection.createStatement()) {
