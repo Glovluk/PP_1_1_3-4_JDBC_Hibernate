@@ -37,23 +37,7 @@ public class Util {
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
-                Configuration configuration = new Configuration();
-
-                Properties settings = new Properties();
-                settings.put(Environment.JAKARTA_JDBC_DRIVER, "com.mysql.cj.jdbc.Driver");
-                settings.put(Environment.JAKARTA_JDBC_URL, "jdbc:mysql://localhost:3306/new_schema");
-                settings.put(Environment.JAKARTA_JDBC_PASSWORD, "root");
-                settings.put(Environment.JAKARTA_JDBC_USER, "root");
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
-
-                settings.put(Environment.SHOW_SQL, "true");
-                settings.put(Environment.FORMAT_SQL, "true");
-
-                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-
-                settings.put(Environment.HBM2DDL_AUTO, "none");
-
-                configuration.setProperties(settings);
+                Configuration configuration = getHibernateConfiguration();
 
                 configuration.addAnnotatedClass(User.class);
 
@@ -67,5 +51,26 @@ public class Util {
         }
 
         return sessionFactory;
+    }
+
+    private static Configuration getHibernateConfiguration() {
+        Configuration configuration = new Configuration();
+
+        Properties settings = new Properties();
+        settings.put(Environment.JAKARTA_JDBC_DRIVER, "com.mysql.cj.jdbc.Driver");
+        settings.put(Environment.JAKARTA_JDBC_URL, URL);
+        settings.put(Environment.JAKARTA_JDBC_PASSWORD, PASS);
+        settings.put(Environment.JAKARTA_JDBC_USER, USER);
+        settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+
+        settings.put(Environment.SHOW_SQL, "true");
+        settings.put(Environment.FORMAT_SQL, "true");
+
+        settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+
+        settings.put(Environment.HBM2DDL_AUTO, "none");
+
+        configuration.setProperties(settings);
+        return configuration;
     }
 }
