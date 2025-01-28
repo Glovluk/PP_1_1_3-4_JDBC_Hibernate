@@ -23,13 +23,15 @@ public class UserDaoHibernateImpl implements UserDao {
 
     public void createUsersTable() {
         String CREATE_TABLE_MySQL = "CREATE TABLE IF NOT EXISTS users " +
-                "(id BIGINT AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), " +
-                "user_lastName VARCHAR(50), user_age TINYINT)";
+                "(id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
+                "user_name VARCHAR(50), " +
+                "user_lastName VARCHAR(50), " +
+                "user_age TINYINT)";
 
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            session.createNativeQuery(CREATE_TABLE_MySQL).executeUpdate();
+            session.createNativeQuery(CREATE_TABLE_MySQL, Void.class).executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
@@ -42,7 +44,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            session.createNativeQuery(DROP_TABLE_MySQL).executeUpdate();
+            session.createNativeQuery(DROP_TABLE_MySQL, Void.class).executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
@@ -63,12 +65,13 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        String REMOVE_USER_FROM_TABLE_MySQL = "DELETE FROM users WHERE id = ?";
 
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            session.createNativeQuery(REMOVE_USER_FROM_TABLE_MySQL).executeUpdate();
+            session.createQuery("DELETE FROM User WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
@@ -93,7 +96,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            session.createQuery("DELETE FROM User").executeUpdate();
+            session.createNativeQuery("TRUNCATE TABLE users", Void.class).executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
